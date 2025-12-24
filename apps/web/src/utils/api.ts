@@ -1,8 +1,23 @@
 import { Capacitor } from '@capacitor/core';
 
-const isAndroid = Capacitor.getPlatform() === 'android';
-const BASE_URL = isAndroid ? 'http://10.0.2.2:5000' : 'http://localhost:5000';
-const API_URL = `${BASE_URL}/api/v1`;
+// Environment Configuration
+const isProduction = import.meta.env.PROD;
+const RENDER_API_URL = import.meta.env.VITE_API_URL || 'https://kingdom-connect-api.onrender.com';
+const LOCAL_ANDROID_URL = 'https://kingdom-connect-api.onrender.com';
+const LOCAL_WEB_URL = 'https://kingdom-connect-api.onrender.com';
+
+const getBaseUrl = () => {
+    if (isProduction) {
+        return RENDER_API_URL;
+    }
+    // Development Logic
+    if (Capacitor.getPlatform() === 'android') {
+        return LOCAL_ANDROID_URL;
+    }
+    return LOCAL_WEB_URL;
+};
+
+const API_URL = `${getBaseUrl()}/api/v1`;
 
 export const apiClient = async (endpoint: string, options: RequestInit = {}) => {
     const token = localStorage.getItem('token');
