@@ -1,0 +1,147 @@
+{
+    "settings": {
+        "title": "Settings",
+        "subtitle": "Manage your account and preferences.",
+        "menu": {
+            "account": "Account",
+            "appearance": "Appearance",
+            "notifications": "Notifications",
+            "content": "Content & Language",
+            "about": "About & Support"
+        },
+        "account": {
+            "changeAvatar": "Change",
+            "fullName": "Full Name",
+            "namePlaceholder": "Enter your name",
+            "email": "Email Address",
+            "plan": "Plan",
+            "save": "Save",
+            "saving": "Saving...",
+            "deleteAccount": {
+                "title": "Danger Zone",
+                "label": "Delete Account",
+                "description": "Permanently remove your account and all data.",
+                "button": "Delete Account",
+                "confirm": "Are you sure you want to delete your account? This action cannot be undone.",
+                "error": "Failed to delete account: ",
+                "genericError": "An error occurred while deleting your account."
+            }
+        },
+        "appearance": {
+            "title": "Theme",
+            "description": "Choose how the app looks and feels.",
+            "light": "Light",
+            "dark": "Dark",
+            "system": "System"
+        },
+        "notifications": {
+            "title": "Push Notifications",
+            "push": "Enable Push Notifications",
+            "email": "Email Newsletters",
+            "sermons": "New Sermon Alerts",
+            "events": "Event Reminders",
+            "subscribed": "Push notification subscribed"
+        },
+        "content": {
+            "title": "Content & Language",
+            "languageLabel": "App Language",
+            "languageDescription": "Select your preferred language for the interface and content."
+        },
+        "about": {
+            "title": "About & Support",
+            "version": "Version",
+            "contact": "Contact Support",
+            "website": "Website"
+        }
+    },
+    "nav": {
+        "home": "Home",
+        "bible": "Bible",
+        "live": "Live",
+        "media": "Media",
+        "quiz": "Quiz"
+    },
+    "home": {
+        "thisWeek": "This Week at Church",
+        "sundayService": "Sunday Service",
+        "youthGroup": "Youth Group",
+        "bibleStudy": "Bible Study"
+    },
+    "landing": {
+        "tagline": "Daily devotionals, sermons, and community right in your pocket.",
+        "getStarted": "Get Started",
+        "joinCommunity": "Join thousands of believers worldwide."
+    },
+    "auth": {
+        "welcome": "Welcome back",
+        "join": "Join Kingdom Connect",
+        "loginDesc": "Enter your credentials to access your account",
+        "registerDesc": "Create a new account to get started",
+        "email": "Email",
+        "password": "Password",
+        "fullName": "Full Name",
+        "confirmPassword": "Confirm Password",
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "createAccount": "Create Account",
+        "orContinue": "Or continue with",
+        "noAccount": "Don't have an account?",
+        "hasAccount": "Already have an account?",
+        "errors": {
+            "invalidEmail": "Invalid email address",
+            "passwordRequired": "Password is required",
+            "nameMin": "Name must be at least 2 characters",
+            "passwordMatch": "Passwords do not match",
+            "minChars": "Min 8 characters",
+            "uppercase": "One uppercase required",
+            "lowercase": "One lowercase required",
+            "number": "One number required",
+            "special": "One special char required"
+        }
+    },
+    "logout": "Log Out",
+    "content": {
+        "hub": "Content Hub",
+        "tabs": {
+            "sermons": "Sermons",
+            "sundaySchool": "Sunday School",
+            "media": "Media"
+        },
+        "sermons": {
+            "empty": "No content available in this category."
+        },
+        "sundaySchool": {
+            "classes": {
+                "beginner": "Beginner",
+                "primary": "Primary",
+                "junior": "Junior"
+            },
+            "age": "Age {{range}}",
+            "empty": "No resources available for this group.",
+            "lesson": "{{type}} Lesson"
+        }
+    },
+    "bible": {
+        "selectPrompt": "Select a book and chapter to start reading."
+    },
+    "quiz": {
+        "title": "Scripture Quizzes",
+        "questionsCount": "{{count}} Qs",
+        "start": "Start Quiz",
+        "loading": "Loading quiz content...",
+        "submit": "Submit Answers",
+        "score": "Score: {{score}} / {{total}}",
+        "perfect": "Perfect Score! Well done!",
+        "effort": "Great effort! Keep studying!",
+        "tryAgain": "Try Another Quiz",
+        "yourAnswer": "Your Answer: {{answer}}",
+        "correctAnswer": "Correct Answer: {{answer}}",
+        "ref": "Ref: {{ref}}",
+        "progress": "Question {{answered}} of {{total}} answered",
+        "audience": {
+            "kids": "Kids",
+            "general": "General",
+            "advanced": "Advanced"
+        }
+    }
+}

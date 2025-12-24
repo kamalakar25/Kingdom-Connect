@@ -1,0 +1,59 @@
+import 'express-async-errors';
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import dotenv from 'dotenv';
+import authRoutes from './modules/auth/auth.routes';
+import bibleRoutes from './modules/bible/bible.routes';
+import dailyVerseRoutes from './modules/daily-verse/daily-verse.routes';
+import quizRoutes from './modules/quizzes/quizzes.routes';
+import sermonRoutes from './modules/sermons/sermons.routes';
+import sundaySchoolRoutes from './modules/sunday-school/sunday-school.routes';
+import mediaRoutes from './modules/media/media.routes';
+import commRoutes from './modules/communication/communication.routes';
+import integrationRoutes from './modules/integrations/integration.routes';
+import devotionalRoutes from './modules/devotionals/devotionals.routes';
+import notificationRoutes from './modules/notifications/notifications.routes';
+import userRoutes from './modules/users/users.routes';
+import { errorHandler } from './middleware/error.middleware';
+import prisma from './config/database';
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/bible', bibleRoutes);
+app.use('/api/v1/daily-verse', dailyVerseRoutes);
+app.use('/api/v1/quizzes', quizRoutes);
+app.use('/api/v1/sermons', sermonRoutes);
+app.use('/api/v1/sunday-school', sundaySchoolRoutes);
+app.use('/api/v1/media', mediaRoutes);
+app.use('/api/v1/communication', commRoutes);
+app.use('/api/v1/integrations', integrationRoutes);
+app.use('/api/v1/devotionals', devotionalRoutes);
+app.use('/api/v1/notifications', notificationRoutes);
+
+app.get('/', (req, res) => {
+    res.json({ message: 'Church App API is running' });
+});
+
+// Global Error Handler
+app.use(errorHandler);
+
+app.listen(PORT, async () => {
+    try {
+        await prisma.$connect();
+        console.log('Database connected successfully');
+    } catch (error) {
+        console.error('Database connection failed:', error);
+        process.exit(1);
+    }
+    console.log(`Server is running on port ${PORT}`);
+});

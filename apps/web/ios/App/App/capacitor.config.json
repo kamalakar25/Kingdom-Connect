@@ -1,0 +1,8 @@
+{
+	"appId": "com.kingdomconnect.mobile",
+	"appName": "Kingdom Connect",
+	"webDir": "dist",
+	"server": {
+		"androidScheme": "https"
+	}
+}

@@ -1,0 +1,326 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Users & roles
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String?  @map("password_hash") // Optional for Google Users
+  displayName   String?  @map("display_name")
+  avatarUrl     String?  @map("avatar_url")
+  googleId      String?  @unique @map("google_id")
+  locale        String   @default("en")
+  role          Role     @default(USER)
+  settings      Json?    @default("{}") // Stores preferences like theme, notifications
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  quizzesCreated      Quiz[]
+  quizAttempts        QuizAttempt[]
+  announcements       Announcement[]
+  events              Event[]
+  sermons             Sermon[]
+  sundaySchoolResources SundaySchoolResource[]
+  devotionals         Devotional[]
+  mediaAssets         MediaAsset[]
+  pushSubscriptions   PushSubscription[]
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+// Bible
+model BibleVersion {
+  id       Int     @id @default(autoincrement())
+  code     String  @unique // 'EN-KJV', 'HI', 'TE'
+  name     String
+  language String
+
+  books       BibleBook[]
+  dailyVerses DailyVerse[]
+  quizzes     Quiz[]
+
+  @@map("bible_versions")
+}
+
+model BibleBook {
+  id        Int     @id @default(autoincrement())
+  versionId Int     @map("version_id")
+  bookOrder Int     @map("book_order")
+  name      String
+
+  version     BibleVersion @relation(fields: [versionId], references: [id])
+  chapters    BibleChapter[]
+  dailyVerses DailyVerse[]
+  quizzes     Quiz[]
+
+  @@map("bible_books")
+}
+
+model BibleChapter {
+  id            Int     @id @default(autoincrement())
+  bookId        Int     @map("book_id")
+  chapterNumber Int     @map("chapter_number")
+
+  book        BibleBook @relation(fields: [bookId], references: [id])
+  verses      BibleVerse[]
+  dailyVerses DailyVerse[]
+  quizzes     Quiz[]
+
+  @@map("bible_chapters")
+}
+
+model BibleVerse {
+  id          Int    @id @default(autoincrement())
+  chapterId   Int    @map("chapter_id")
+  verseNumber Int    @map("verse_number")
+  text        String
+
+  chapter BibleChapter @relation(fields: [chapterId], references: [id])
+
+  @@map("bible_verses")
+}
+
+// Daily verses
+model DailyVerse {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @unique @db.Date
+  versionId   Int?     @map("version_id")
+  bookId      Int?     @map("book_id")
+  chapterId   Int?     @map("chapter_id")
+  verseNumber Int      @map("verse_number")
+  theme       String?
+
+  version BibleVersion? @relation(fields: [versionId], references: [id])
+  book    BibleBook?    @relation(fields: [bookId], references: [id])
+  chapter BibleChapter? @relation(fields: [chapterId], references: [id])
+
+  @@map("daily_verses")
+}
+
+// Quizzes (Youth/Elders)
+enum Audience {
+  YOUTH
+  ELDERS
+}
+
+model Quiz {
+  id        String   @id @default(uuid())
+  audience  Audience
+  versionId Int?     @map("version_id")
+  bookId    Int?     @map("book_id")
+  chapterId Int?     @map("chapter_id")
+  title     String
+  language  String   // 'en','hi','te'
+  isActive  Boolean  @default(true) @map("is_active")
+  createdBy String?  @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  version   BibleVersion? @relation(fields: [versionId], references: [id])
+  book      BibleBook?    @relation(fields: [bookId], references: [id])
+  chapter   BibleChapter? @relation(fields: [chapterId], references: [id])
+  creator   User?         @relation(fields: [createdBy], references: [id])
+  questions QuizQuestion[]
+  attempts  QuizAttempt[]
+
+  @@map("quizzes")
+}
+
+model QuizQuestion {
+  id            String @id @default(uuid())
+  quizId        String @map("quiz_id")
+  question      String
+  options       Json
+  correctOption Int    @map("correct_option")
+  verseRef      String? @map("verse_ref")
+
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@map("quiz_questions")
+}
+
+model QuizAttempt {
+  id          String   @id @default(uuid())
+  quizId      String?  @map("quiz_id")
+  userId      String?  @map("user_id")
+  score       Int
+  total       Int
+  submittedAt DateTime @default(now()) @map("submitted_at")
+
+  quiz Quiz? @relation(fields: [quizId], references: [id])
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("quiz_attempts")
+}
+
+// Announcements / Events
+model Announcement {
+  id        String    @id @default(uuid())
+  title     String
+  body      String
+  language  String
+  startAt   DateTime? @map("start_at")
+  endAt     DateTime? @map("end_at")
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  creator User? @relation(fields: [createdBy], references: [id])
+
+  @@map("announcements")
+}
+
+model Event {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  location    String?
+  startsAt    DateTime  @map("starts_at")
+  endsAt      DateTime? @map("ends_at")
+  language    String
+  createdBy   String?   @map("created_by")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  creator User? @relation(fields: [createdBy], references: [id])
+
+  @@map("events")
+}
+
+// Sermons
+enum MediaType {
+  AUDIO
+  VIDEO
+}
+
+model Sermon {
+  id           String    @id @default(uuid())
+  title        String
+  description  String?
+  speaker      String?
+  language     String
+  mediaType    MediaType @map("media_type")
+  mediaUrl     String    @map("media_url")
+  thumbnailUrl String?   @map("thumbnail_url")
+  publishedAt  DateTime? @map("published_at")
+  createdBy    String?   @map("created_by")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  creator User? @relation(fields: [createdBy], references: [id])
+
+  @@map("sermons")
+}
+
+// Sunday School
+model SundaySchoolClass {
+  id        Int                    @id @default(autoincrement())
+  code      String                 @unique // BEGINNER, PRIMARY, JUNIOR, SENIOR
+  name      String
+  resources SundaySchoolResource[]
+
+  @@map("sunday_school_classes")
+}
+
+enum ResourceType {
+  VIDEO
+  PDF
+}
+
+model SundaySchoolResource {
+  id           String       @id @default(uuid())
+  classId      Int?         @map("class_id")
+  title        String
+  language     String
+  resourceType ResourceType @map("resource_type")
+  url          String
+  thumbnailUrl String?      @map("thumbnail_url")
+  createdBy    String?      @map("created_by")
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  class   SundaySchoolClass? @relation(fields: [classId], references: [id])
+  creator User?              @relation(fields: [createdBy], references: [id])
+
+  @@map("sunday_school_resources")
+}
+
+// Youth devotionals
+model Devotional {
+  id          String    @id @default(uuid())
+  title       String
+  body      String
+  language    String
+  publishedAt DateTime? @map("published_at")
+  createdBy   String?   @map("created_by")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  creator User? @relation(fields: [createdBy], references: [id])
+
+  @@map("devotionals")
+}
+
+// Media hub
+enum AssetType {
+  POSTER
+  PAMPHLET
+  LIVE
+  RECORDED
+}
+
+model MediaAsset {
+  id           String    @id @default(uuid())
+  title        String
+  language     String
+  assetType    AssetType @map("asset_type")
+  url          String
+  thumbnailUrl String?   @map("thumbnail_url")
+  tags         String[]
+  createdBy    String?   @map("created_by")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  creator User? @relation(fields: [createdBy], references: [id])
+
+  @@map("media_assets")
+}
+
+// Integrations
+model YoutubeChannel {
+  id         Int    @id @default(autoincrement())
+  tabName    String @map("tab_name")
+  channelUrl String @map("channel_url")
+
+  @@map("youtube_channels")
+}
+
+enum MixlrStatus {
+  LIVE
+  OFFLINE
+}
+
+model MixlrStream {
+  id       Int         @id @default(autoincrement())
+  embedUrl String      @map("embed_url")
+  status   MixlrStatus @default(OFFLINE)
+
+  @@map("mixlr_streams")
+}
+
+// Push subscriptions (Web Push)
+model PushSubscription {
+  id        String   @id @default(uuid())
+  userId    String?  @map("user_id")
+  endpoint  String   @unique
+  keys      Json
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("push_subscriptions")
+}
