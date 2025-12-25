@@ -85,6 +85,7 @@
         "signUp": "Sign Up",
         "createAccount": "Create Account",
         "orContinue": "Or continue with",
+        "continueWithGoogle": "Continue with Google",
         "noAccount": "Don't have an account?",
         "hasAccount": "Already have an account?",
         "errors": {

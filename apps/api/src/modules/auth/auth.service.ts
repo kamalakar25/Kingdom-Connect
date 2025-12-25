@@ -53,7 +53,10 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 export const loginWithGoogle = async (credential: string) => {
     const ticket = await client.verifyIdToken({
         idToken: credential,
-        audience: process.env.GOOGLE_CLIENT_ID,
+        audience: [
+            process.env.GOOGLE_CLIENT_ID!,
+            process.env.GOOGLE_ANDROID_CLIENT_ID!
+        ],
     });
     const payload = ticket.getPayload();
 

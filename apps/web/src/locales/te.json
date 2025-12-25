@@ -85,6 +85,7 @@
         "signUp": "సైన్ అప్",
         "createAccount": "ఖాతాను సృష్టించండి",
         "orContinue": "లేదా దీనితో కొనసాగించండి",
+        "continueWithGoogle": "Google తో కొనసాగండి",
         "noAccount": "ఖాతా లేదా?",
         "hasAccount": "ఇప్పటికే ఖాతా ఉందా?",
         "errors": {

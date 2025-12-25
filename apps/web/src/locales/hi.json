@@ -85,6 +85,7 @@
         "signUp": "साइन अप करें",
         "createAccount": "खाता बनाएं",
         "orContinue": "या इसके साथ जारी रखें",
+        "continueWithGoogle": "Google के साथ जारी रखें",
         "noAccount": "क्या आपके पास खाता नहीं है?",
         "hasAccount": "क्या आपके पास पहले से एक खाता है?",
         "errors": {

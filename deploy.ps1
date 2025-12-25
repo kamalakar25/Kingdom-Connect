@@ -1,9 +1,14 @@
 # deploy.ps1
 Write-Host "🚀 Starting Reliable Android Deployment..." -ForegroundColor Green
 
-# 1. Sync Web Assets to Android
-Write-Host "📦 Syncing Capacitor..." -ForegroundColor Cyan
+# 1. Build Web Assets
+Write-Host "🏗️  Building Web App..." -ForegroundColor Cyan
 Set-Location "apps/web"
+npm run build
+if ($LASTEXITCODE -ne 0) { Write-Error "Web Build Failed"; exit 1 }
+
+# 2. Sync Web Assets to Android
+Write-Host "📦 Syncing Capacitor..." -ForegroundColor Cyan
 npx cap sync android
 if ($LASTEXITCODE -ne 0) { Write-Error "Capacitor Sync Failed"; exit 1 }
 
