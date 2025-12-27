@@ -4,6 +4,4 @@
     <string name="title_activity_main">Kingdom Connect</string>
     <string name="package_name">com.kingdomconnect.mobile</string>
     <string name="custom_url_scheme">com.kingdomconnect.mobile</string>
-    <string name="server_client_id">988931700986-fv35ptbjvdpub09m0fl7s491nr0abkup.apps.googleusercontent.com</string>
-    <string name="default_web_client_id">988931700986-fv35ptbjvdpub09m0fl7s491nr0abkup.apps.googleusercontent.com</string>
 </resources>

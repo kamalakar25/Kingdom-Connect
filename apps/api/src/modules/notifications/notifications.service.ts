@@ -3,7 +3,6 @@ import webpush from 'web-push';
 
 // Initialize VAPID keys - normally these should be in env vars
 const publicVapidKey = process.env.VAPID_PUBLIC_KEY || 'BHwM9...'; // Placeholder if not in env
-const privateVapidKey = process.env.VAPID_PRIVATE_KEY || '...';
 
 if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
     webpush.setVapidDetails(

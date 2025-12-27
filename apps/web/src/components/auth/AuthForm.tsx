@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { emailSchema, passwordSchema, nameSchema } from '../../lib/schemas';
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -14,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/auth-context';
 import { Capacitor } from '@capacitor/core';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { apiClient } from '../../utils/api';
 
 // --- Types ---
 
@@ -39,32 +41,44 @@ interface AuthFormProps {
 export function AuthForm({ onSuccess, onBack }: AuthFormProps) {
     const { t } = useTranslation();
     const [isLogin, setIsLogin] = useState(true);
+
+    const [isForgotPassword, setIsForgotPassword] = useState(false);
+
+    // Initialize Google Auth
+    useEffect(() => {
+        GoogleAuth.initialize({
+            clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+            scopes: ['profile', 'email'],
+            grantOfflineAccess: true,
+        });
+    }, []);
+
     const { login, register, googleLogin } = useAuth();
     const [loading, setLoading] = useState(false);
     const [globalError, setGlobalError] = useState('');
 
     // --- Dynamic Zod Schemas ---
-    const passwordSchema = z.string()
-        .min(8, t('auth.errors.minChars'))
-        .regex(/[A-Z]/, t('auth.errors.uppercase'))
-        .regex(/[a-z]/, t('auth.errors.lowercase'))
-        .regex(/[0-9]/, t('auth.errors.number'))
-        .regex(/[^A-Za-z0-9]/, t('auth.errors.special'));
-
+    const passwordSchemaVal = passwordSchema(t);
     const loginSchema = z.object({
-        email: z.string().email(t('auth.errors.invalidEmail')),
+        email: emailSchema(t),
         password: z.string().min(1, t('auth.errors.passwordRequired')),
     });
 
     const registerSchema = z.object({
-        name: z.string().min(2, t('auth.errors.nameMin')),
-        email: z.string().email(t('auth.errors.invalidEmail')),
-        password: passwordSchema,
+        name: nameSchema(t),
+        email: emailSchema(t),
+        password: passwordSchemaVal,
         confirmPassword: z.string()
     }).refine((data) => data.password === data.confirmPassword, {
         message: t('auth.errors.passwordMatch'),
         path: ["confirmPassword"],
     });
+
+    const forgotPasswordSchema = z.object({
+        email: emailSchema(t)
+    });
+
+    type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
     // --- Forms ---
     const loginForm = useForm<LoginFormValues>({
@@ -74,6 +88,11 @@ export function AuthForm({ onSuccess, onBack }: AuthFormProps) {
 
     const registerForm = useForm<RegisterFormValues>({
         resolver: zodResolver(registerSchema),
+        mode: 'onChange'
+    });
+
+    const forgotPasswordForm = useForm<ForgotPasswordFormValues>({
+        resolver: zodResolver(forgotPasswordSchema),
         mode: 'onChange'
     });
 
@@ -109,6 +128,29 @@ export function AuthForm({ onSuccess, onBack }: AuthFormProps) {
         }
     };
 
+    const onForgotPasswordSubmit = async (data: ForgotPasswordFormValues) => {
+        setLoading(true);
+        setGlobalError('');
+        try {
+            const res = await apiClient('/auth/forgot-password', {
+                method: 'POST',
+                body: JSON.stringify({ email: data.email })
+            });
+            if (res.success) {
+                alert(t('auth.resetEmailSent', 'Password reset instructions sent to your email.'));
+                setIsForgotPassword(false);
+                setIsLogin(true);
+                forgotPasswordForm.reset();
+            } else {
+                setGlobalError(res.message || 'Failed to send reset email');
+            }
+        } catch (err: any) {
+            setGlobalError(err.message || 'Error occurred');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="min-h-screen flex items-center justify-center p-4 bg-background/90 bg-[url('https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?w=1200&auto=format&fit=crop')] bg-cover bg-center bg-blend-overlay">
             <Card className="w-full max-w-md border-border bg-card/90 backdrop-blur-2xl shadow-2xl animate-in zoom-in-95 duration-500">
@@ -119,10 +161,10 @@ export function AuthForm({ onSuccess, onBack }: AuthFormProps) {
                         </Button>
                     </div>
                     <CardTitle className="text-3xl font-bold text-foreground tracking-tight">
-                        {isLogin ? t('auth.welcome') : t('auth.join')}
+                        {isForgotPassword ? t('auth.forgotPassword', 'Reset Password') : isLogin ? t('auth.welcome') : t('auth.join')}
                     </CardTitle>
                     <CardDescription className="text-muted-foreground">
-                        {isLogin ? t('auth.loginDesc') : t('auth.registerDesc')}
+                        {isForgotPassword ? t('auth.forgotPasswordSubtitle', 'We will send you a reset link.') : isLogin ? t('auth.loginDesc') : t('auth.registerDesc')}
                     </CardDescription>
                 </CardHeader>
 
@@ -145,16 +187,55 @@ export function AuthForm({ onSuccess, onBack }: AuthFormProps) {
                                     register={loginForm.register('email')}
                                     error={loginForm.formState.errors.email}
                                 />
-                                <InputField
-                                    id="login-password"
-                                    label={t('auth.password')}
-                                    type="password"
-                                    showToggle
-                                    register={loginForm.register('password')}
-                                    error={loginForm.formState.errors.password}
-                                />
+                                <div>
+                                    <InputField
+                                        id="login-password"
+                                        label={t('auth.password')}
+                                        type="password"
+                                        showToggle
+                                        register={loginForm.register('password')}
+                                        error={loginForm.formState.errors.password}
+                                    />
+                                    <div className="flex justify-end mt-1">
+                                        <button
+                                            type="button"
+                                            onClick={() => { setIsLogin(false); setIsForgotPassword(true); }}
+                                            className="text-xs text-primary hover:underline"
+                                        >
+                                            {t('auth.forgotPasswordLink', 'Forgot Password?')}
+                                        </button>
+                                    </div>
+                                </div>
                                 <Button className="w-full h-11" type="submit" disabled={loading}>
                                     {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : t('auth.signIn')}
+                                </Button>
+                            </motion.form>
+                        ) : isForgotPassword ? (
+                            <motion.form
+                                key="forgot-password"
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                onSubmit={forgotPasswordForm.handleSubmit(onForgotPasswordSubmit)}
+                                className="space-y-4"
+                            >
+                                <div className="text-center mb-4">
+                                    <h3 className="font-semibold text-lg">{t('auth.forgotPassword', 'Reset Password')}</h3>
+                                    <p className="text-sm text-muted-foreground">{t('auth.forgotPasswordDesc', 'Enter your email to receive reset instructions.')}</p>
+                                </div>
+                                <InputField
+                                    id="fp-email"
+                                    label={t('auth.email')}
+                                    type="email"
+                                    placeholder="name@example.com"
+                                    register={forgotPasswordForm.register('email')}
+                                    error={forgotPasswordForm.formState.errors.email}
+                                />
+                                <Button className="w-full h-11" type="submit" disabled={loading}>
+                                    {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : t('auth.sendResetLink', 'Send Link')}
+                                </Button>
+                                <Button variant="link" className="w-full" type="button" onClick={() => setIsForgotPassword(false)}>
+                                    {t('common.cancel', 'Back to Login')}
                                 </Button>
                             </motion.form>
                         ) : (
@@ -207,11 +288,23 @@ export function AuthForm({ onSuccess, onBack }: AuthFormProps) {
                         )}
                     </AnimatePresence>
 
-                    {globalError && (
-                        <div className="mt-4 p-3 text-sm text-destructive-foreground bg-destructive/10 border border-destructive/20 rounded-lg flex items-center gap-2 animate-in slide-in-from-bottom-2">
-                            <X className="w-4 h-4 shrink-0" /> {globalError}
-                        </div>
-                    )}
+                    <AnimatePresence>
+                        {globalError && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1, x: [0, -10, 10, -10, 10, 0] }}
+                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                transition={{ duration: 0.4 }}
+                                className="mt-4 p-4 text-sm font-medium text-destructive-foreground bg-destructive/15 border border-destructive/30 rounded-lg flex items-start gap-3 shadow-lg"
+                            >
+                                <X className="w-5 h-5 shrink-0 mt-0.5" />
+                                <div>
+                                    <p className="font-bold">Error</p>
+                                    <p className="opacity-90">{globalError}</p>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </CardContent>
 
                 <CardFooter className="flex flex-col gap-4">

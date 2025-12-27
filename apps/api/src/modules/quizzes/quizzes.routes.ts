@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as QuizController from './quizzes.controller';
-import { authenticate } from '../../middleware/auth.middleware';
+// import { authenticate } from '../../middleware/auth.middleware';
+import { validate } from '../../middleware/validate.middleware';
 
 const router = Router();
 

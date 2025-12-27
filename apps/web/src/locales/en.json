@@ -25,6 +25,10 @@
                 "confirm": "Are you sure you want to delete your account? This action cannot be undone.",
                 "error": "Failed to delete account: ",
                 "genericError": "An error occurred while deleting your account."
+            },
+            "avatar": {
+                "uploadFailed": "Failed to upload avatar: ",
+                "error": "Error uploading avatar"
             }
         },
         "appearance": {
@@ -45,14 +49,34 @@
         "content": {
             "title": "Content & Language",
             "languageLabel": "App Language",
-            "languageDescription": "Select your preferred language for the interface and content."
+            "languageDescription": "Select your preferred language for the interface and content.",
+            "languages": {
+                "en": "English",
+                "hi": "Hindi (हिंदी)",
+                "te": "Telugu (తెలుగు)"
+            }
         },
         "about": {
             "title": "About & Support",
             "version": "Version",
             "contact": "Contact Support",
             "website": "Website"
-        }
+        },
+        "security": "Security",
+        "password": "Password",
+        "passwordDesc": "Manage your password and security settings.",
+        "changePassword": "Change Password",
+        "changePasswordInfo": "Enter your current password and a new password to update your account.",
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmNewPassword": "Confirm New Password",
+        "updatePassword": "Update Password",
+        "enterPasswordToConfirm": "Enter your password to confirm.",
+        "confirmDelete": "Confirm Delete",
+        "deleteFailed": "Failed to delete account",
+        "passwordMismatch": "New passwords do not match",
+        "passwordChanged": "Password changed successfully",
+        "passwordChangeFailed": "Failed to change password"
     },
     "nav": {
         "home": "Home",
@@ -74,9 +98,14 @@
     },
     "auth": {
         "welcome": "Welcome back",
-        "join": "Join Kingdom Connect",
-        "loginDesc": "Enter your credentials to access your account",
-        "registerDesc": "Create a new account to get started",
+        "join": "Create an account",
+        "loginDesc": "Enter your email below to login to your account",
+        "registerDesc": "Enter your email below to create your account",
+        "forgotPassword": "Reset Password",
+        "forgotPasswordSubtitle": "We will send you a reset link.",
+        "forgotPasswordLink": "Forgot Password?",
+        "resetEmailSent": "Password reset instructions sent to your email.",
+        "sendResetLink": "Send Link",
         "email": "Email",
         "password": "Password",
         "fullName": "Full Name",
@@ -144,5 +173,11 @@
             "general": "General",
             "advanced": "Advanced"
         }
+    },
+    "common": {
+        "cancel": "Cancel",
+        "save": "Save",
+        "passwordPlaceholder": "Password",
+        "userFallback": "User"
     }
 }

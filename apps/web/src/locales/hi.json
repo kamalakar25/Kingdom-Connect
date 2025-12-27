@@ -25,6 +25,10 @@
                 "confirm": "क्या आप वाकई अपना खाता हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती।",
                 "error": "खाता हटाने में विफल: ",
                 "genericError": "आपका खाता हटाते समय एक त्रुटि हुई।"
+            },
+            "avatar": {
+                "uploadFailed": "अवतार अपलोड विफल: ",
+                "error": "अवतार अपलोड करने में त्रुटि"
             }
         },
         "appearance": {
@@ -45,14 +49,34 @@
         "content": {
             "title": "सामग्री और भाषा",
             "languageLabel": "ऐप भाषा",
-            "languageDescription": "इंटरफ़ेस और सामग्री के लिए अपनी पसंदीदा भाषा चुनें।"
+            "languageDescription": "इंटरफ़ेस और सामग्री के लिए अपनी पसंदीदा भाषा चुनें।",
+            "languages": {
+                "en": "English",
+                "hi": "Hindi (हिंदी)",
+                "te": "Telugu (తెలుగు)"
+            }
         },
         "about": {
             "title": "के बारे में और समर्थन",
             "version": "संस्करण",
             "contact": "समर्थन से संपर्क करें",
             "website": "वेबसाइट"
-        }
+        },
+        "security": "सुरक्षा",
+        "password": "पासवर्ड",
+        "passwordDesc": "अपना पासवर्ड और सुरक्षा सेटिंग्स प्रबंधित करें।",
+        "changePassword": "पासवर्ड बदलें",
+        "changePasswordInfo": "अपना खाता अपडेट करने के लिए अपना वर्तमान पासवर्ड और नया पासवर्ड दर्ज करें।",
+        "currentPassword": "वर्तमान पासवर्ड",
+        "newPassword": "नया पासवर्ड",
+        "confirmNewPassword": "नए पासवर्ड की पुष्टि करें",
+        "updatePassword": "पासवर्ड अपडेट करें",
+        "enterPasswordToConfirm": "पुष्टि करने के लिए अपना पासवर्ड दर्ज करें।",
+        "confirmDelete": "हटाने की पुष्टि करें",
+        "deleteFailed": "खाता हटाने में विफल",
+        "passwordMismatch": "नए पासवर्ड मेल नहीं खाते",
+        "passwordChanged": "पासवर्ड सफलतापूर्वक बदला गया",
+        "passwordChangeFailed": "पासवर्ड बदलने में विफल"
     },
     "nav": {
         "home": "होम",
@@ -74,9 +98,14 @@
     },
     "auth": {
         "welcome": "वापसी पर स्वागत है",
-        "join": "किंगडम कनेक्ट से जुड़ें",
-        "loginDesc": "अपने खाते तक पहुंचने के लिए अपनी साख दर्ज करें",
-        "registerDesc": "शुरू करने के लिए एक नया खाता बनाएं",
+        "join": "खाता बनाएं",
+        "loginDesc": "अपने खाते में लॉग इन करने के लिए नीचे अपना ईमेल दर्ज करें",
+        "registerDesc": "अपना खाता बनाने के लिए नीचे अपना ईमेल दर्ज करें",
+        "forgotPassword": "पासवर्ड रीसेट",
+        "forgotPasswordSubtitle": "हम आपको एक रीसेट लिंक भेजेंगे।",
+        "forgotPasswordLink": "पासवर्ड भूल गए?",
+        "resetEmailSent": "पासवर्ड रीसेट निर्देश आपके ईमेल पर भेजे गए।",
+        "sendResetLink": "लिंक भेजें",
         "email": "ईमेल",
         "password": "पासवर्ड",
         "fullName": "पूरा नाम",
@@ -144,5 +173,11 @@
             "general": "सामान्य",
             "advanced": "उन्नत"
         }
+    },
+    "common": {
+        "cancel": "रद्द करें",
+        "save": "सहेजें",
+        "passwordPlaceholder": "पासवर्ड",
+        "userFallback": "उपयोगकर्ता"
     }
 }

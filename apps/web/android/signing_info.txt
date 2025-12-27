@@ -1,0 +1,75 @@
+
+> Configure project :app
+WARNING: Using flatDir should be avoided because it doesn't support any meta-data formats.
+
+> Configure project :capacitor-cordova-android-plugins
+WARNING: Using flatDir should be avoided because it doesn't support any meta-data formats.
+
+> Task :app:signingReport
+Variant: debug
+Config: debug
+Store: C:\Users\KAMALAKAR\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: A0:CD:80:CA:70:EB:C1:34:8D:C6:2E:FC:1C:F8:09:56
+SHA1: F1:40:DC:A1:51:C4:F5:73:99:62:B8:84:86:FA:9C:AA:D1:3C:F5:FB
+SHA-256: D0:EC:40:AA:49:81:29:0C:E5:24:23:67:A6:FF:C2:6B:3C:C6:1C:89:DB:52:4D:B0:D9:CE:3A:1D:C8:7A:4B:51
+Valid until: Saturday, 11 December 2055
+----------
+Variant: release
+Config: null
+Store: null
+Alias: null
+----------
+Variant: debugAndroidTest
+Config: debug
+Store: C:\Users\KAMALAKAR\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: A0:CD:80:CA:70:EB:C1:34:8D:C6:2E:FC:1C:F8:09:56
+SHA1: F1:40:DC:A1:51:C4:F5:73:99:62:B8:84:86:FA:9C:AA:D1:3C:F5:FB
+SHA-256: D0:EC:40:AA:49:81:29:0C:E5:24:23:67:A6:FF:C2:6B:3C:C6:1C:89:DB:52:4D:B0:D9:CE:3A:1D:C8:7A:4B:51
+Valid until: Saturday, 11 December 2055
+----------
+
+> Task :capacitor-android:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: C:\Users\KAMALAKAR\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: A0:CD:80:CA:70:EB:C1:34:8D:C6:2E:FC:1C:F8:09:56
+SHA1: F1:40:DC:A1:51:C4:F5:73:99:62:B8:84:86:FA:9C:AA:D1:3C:F5:FB
+SHA-256: D0:EC:40:AA:49:81:29:0C:E5:24:23:67:A6:FF:C2:6B:3C:C6:1C:89:DB:52:4D:B0:D9:CE:3A:1D:C8:7A:4B:51
+Valid until: Saturday, 11 December 2055
+----------
+
+> Task :capacitor-cordova-android-plugins:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: C:\Users\KAMALAKAR\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: A0:CD:80:CA:70:EB:C1:34:8D:C6:2E:FC:1C:F8:09:56
+SHA1: F1:40:DC:A1:51:C4:F5:73:99:62:B8:84:86:FA:9C:AA:D1:3C:F5:FB
+SHA-256: D0:EC:40:AA:49:81:29:0C:E5:24:23:67:A6:FF:C2:6B:3C:C6:1C:89:DB:52:4D:B0:D9:CE:3A:1D:C8:7A:4B:51
+Valid until: Saturday, 11 December 2055
+----------
+
+> Task :codetrix-studio-capacitor-google-auth:signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: C:\Users\KAMALAKAR\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: A0:CD:80:CA:70:EB:C1:34:8D:C6:2E:FC:1C:F8:09:56
+SHA1: F1:40:DC:A1:51:C4:F5:73:99:62:B8:84:86:FA:9C:AA:D1:3C:F5:FB
+SHA-256: D0:EC:40:AA:49:81:29:0C:E5:24:23:67:A6:FF:C2:6B:3C:C6:1C:89:DB:52:4D:B0:D9:CE:3A:1D:C8:7A:4B:51
+Valid until: Saturday, 11 December 2055
+----------
+
+[Incubating] Problems report is available at: file:///D:/Projects/Kingdom%20Connect/apps/web/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 2s
+4 actionable tasks: 4 executed

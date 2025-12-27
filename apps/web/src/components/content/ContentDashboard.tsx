@@ -17,7 +17,7 @@ export function ContentDashboard() {
             </header>
 
             {/* Tabs */}
-            <div className="border-b border-border flex gap-6">
+            <div className="border-b border-border flex gap-6 overflow-x-auto no-scrollbar mask-gradient-right">
                 <button
                     onClick={() => setActiveTab('SERMONS')}
                     className={`pb-3 text-sm font-medium border-b-2 transition ${activeTab === 'SERMONS' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}

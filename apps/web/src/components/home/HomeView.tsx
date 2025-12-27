@@ -41,7 +41,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                         {t('home.thisWeek')}
                     </h3>
 
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <ServiceCard
                             icon={<Calendar className="w-6 h-6 text-primary/80" />}
                             title={t('home.sundayService')}
@@ -77,8 +77,8 @@ function ServiceCard({ icon, title, time, onClick }: { icon: React.ReactNode, ti
                 {icon}
             </div>
             <div>
-                <p className="text-[10px] font-bold leading-tight text-foreground mb-1 line-clamp-2 md:text-xs">{title}</p>
-                <p className="text-[9px] text-muted-foreground md:text-[10px]">{time}</p>
+                <p className="text-sm font-bold leading-tight text-foreground mb-1 md:text-xs">{title}</p>
+                <p className="text-xs text-muted-foreground md:text-[10px]">{time}</p>
             </div>
         </GlassCard>
     )

@@ -31,9 +31,7 @@ export function DailyVerseCard({ onDevotionalClick }: DailyVerseCardProps) {
                     <p className="text-xs tracking-[0.2em] font-medium text-muted-foreground uppercase">
                         Daily Verse:
                     </p>
-                    <blockquote className="text-xl md:text-2xl font-serif text-foreground leading-relaxed text-shadow-sm">
-                        "{verse.text}"
-                    </blockquote>
+                    <p className="text-lg italic text-gray-700 dark:text-gray-300 mb-4">&quot;{verse.text}&quot;</p>
                     <p className="text-sm font-medium tracking-widest text-primary uppercase pt-2">
                         {verse.reference}
                     </p>

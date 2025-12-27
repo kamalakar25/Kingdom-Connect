@@ -1,5 +1,0 @@
-{
-  "name": "PrismaClientInitializationError",
-  "clientVersion": "5.7.0",
-  "errorCode": "P1000"
-}

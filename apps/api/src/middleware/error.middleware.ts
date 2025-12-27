@@ -8,5 +8,9 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
         return ApiResponse.error(res, 'CORS Error', 403);
     }
 
-    return ApiResponse.error(res, err.message || 'Internal Server Error', 500);
+    const message = process.env.NODE_ENV === 'production'
+        ? 'Internal Server Error'
+        : err.message || 'Internal Server Error';
+
+    return ApiResponse.error(res, message, 500);
 };

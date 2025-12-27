@@ -11,4 +11,9 @@ router.post('/login', validate(loginSchema), AuthController.login);
 router.post('/google', AuthController.googleLogin);
 router.get('/me', authenticate, AuthController.me);
 
+// Secure Management
+router.post('/change-password', authenticate, AuthController.changePassword);
+router.post('/forgot-password', AuthController.forgotPassword);
+router.post('/reset-password', AuthController.resetPassword);
+
 export default router;

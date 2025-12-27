@@ -13,7 +13,7 @@ interface BibleNavProps {
 
 export function BibleNav({ version, book, chapter, onVersionClick, onBookClick, onChapterClick }: BibleNavProps) {
     return (
-        <nav className="flex items-center gap-1 p-1 rounded-full bg-background/80 backdrop-blur-xl border border-border w-fit mx-auto sticky top-4 z-50 shadow-2xl">
+        <nav className="flex items-center gap-1 p-1 rounded-full bg-background/80 backdrop-blur-xl border border-border w-fit max-w-[95vw] mx-auto sticky top-4 z-50 shadow-2xl overflow-x-auto no-scrollbar">
             {/* Version Pill */}
             <NavPill onClick={onVersionClick} className="pl-3 pr-4 border-r border-border rounded-l-full hover:bg-muted">
                 <Globe className="w-4 h-4 text-primary mr-2" />

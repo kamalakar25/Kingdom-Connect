@@ -1,5 +1,7 @@
 import 'express-async-errors';
+import compression from 'compression';
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
@@ -17,15 +19,36 @@ import notificationRoutes from './modules/notifications/notifications.routes';
 import userRoutes from './modules/users/users.routes';
 import { errorHandler } from './middleware/error.middleware';
 import prisma from './config/database';
+import { apiLimiter } from './middleware/rate-limit.middleware';
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+const allowedOrigins = process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : ['http://localhost:5173', 'http://localhost:4173'];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    credentials: true
+}));
+
+app.use(compression());
+app.use(express.json({ limit: '10mb' })); // Limit body size
+app.use(apiLimiter);
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);

@@ -22,7 +22,7 @@ export function LiveStreamTabs() {
                 <h2 className="text-2xl font-bold text-foreground tracking-tight">Live Service</h2>
             </header>
 
-            <div className="flex gap-2 p-1 bg-muted/50 backdrop-blur-xl rounded-2xl border border-border w-fit">
+            <div className="flex gap-2 p-1 bg-muted/50 backdrop-blur-xl rounded-2xl border border-border w-fit max-w-full overflow-x-auto no-scrollbar">
                 {STATIC_CHANNELS.map((tab, idx) => (
                     <button
                         key={idx}
