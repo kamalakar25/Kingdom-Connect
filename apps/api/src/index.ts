@@ -30,7 +30,17 @@ app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-const allowedOrigins = process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : ['http://localhost:5173', 'http://localhost:4173'];
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:4173',
+    'http://localhost',
+    'capacitor://localhost'
+];
+
+if (process.env.FRONTEND_URL) {
+    const envOrigins = process.env.FRONTEND_URL.split(',').map(url => url.trim());
+    allowedOrigins.push(...envOrigins);
+}
 
 app.use(cors({
     origin: (origin, callback) => {
