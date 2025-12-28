@@ -1,10 +1,10 @@
+import './init-env'; // Must be first to load env vars before other imports
 import 'express-async-errors';
 import compression from 'compression';
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
 import authRoutes from './modules/auth/auth.routes';
 import bibleRoutes from './modules/bible/bible.routes';
 import dailyVerseRoutes from './modules/daily-verse/daily-verse.routes';
@@ -21,9 +21,9 @@ import { errorHandler } from './middleware/error.middleware';
 import prisma from './config/database';
 import { apiLimiter } from './middleware/rate-limit.middleware';
 
-dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const app = express();
+app.set('trust proxy', 1); // Trust first key from proxy (Render)
 const PORT = process.env.PORT || 5000;
 
 app.use(helmet({

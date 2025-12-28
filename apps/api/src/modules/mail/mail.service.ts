@@ -7,7 +7,7 @@ class MailService {
         // Initialize transporter
         // Ideally, these would come from process.env
         // For development, we can use Ethereal or a placeholder
-        this.transporter = nodemailer.createTransport({
+        const mailConfig = {
             host: process.env.SMTP_HOST || 'smtp.ethereal.email',
             port: parseInt(process.env.SMTP_PORT || '587'),
             secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
@@ -15,7 +15,16 @@ class MailService {
                 user: process.env.SMTP_USER || 'ethereal_user',
                 pass: process.env.SMTP_PASS || 'ethereal_pass'
             }
-        });
+        };
+
+        console.log('--- Mail Service Config ---');
+        console.log('Host:', mailConfig.host);
+        console.log('Port:', mailConfig.port);
+        console.log('Secure:', mailConfig.secure);
+        console.log('User:', mailConfig.auth.user);
+        console.log('---------------------------');
+
+        this.transporter = nodemailer.createTransport(mailConfig);
     }
 
     async sendEmail(to: string, subject: string, html: string) {

@@ -70,15 +70,26 @@ export const login = async (req: Request, res: Response) => {
 
 export const googleLogin = async (req: Request, res: Response) => {
     const { credential } = req.body;
+    console.log('[Google Login] Received credential length:', credential ? credential.length : 0);
 
     try {
+        const webClientId = process.env.GOOGLE_CLIENT_ID;
+        const androidClientId = process.env.GOOGLE_ANDROID_CLIENT_ID;
+
+        console.log('[Google Login] Verifying with Client IDs:');
+        console.log(`- Web: ${webClientId}`);
+        console.log(`- Android: ${androidClientId}`);
+
         const ticket = await client.verifyIdToken({
             idToken: credential,
-            audience: process.env.GOOGLE_CLIENT_ID,
+            // Verify against both Web and Android Client IDs
+            audience: [webClientId!, androidClientId!].filter(Boolean),
         });
         const payload = ticket.getPayload();
+        console.log('[Google Login] Payload email:', payload?.email);
 
         if (!payload || !payload.email) {
+            console.log('[Google Login] Invalid payload');
             return ApiResponse.error(res, 'Invalid Google token', 400);
         }
 
@@ -87,6 +98,7 @@ export const googleLogin = async (req: Request, res: Response) => {
         let user = await prisma.user.findUnique({ where: { email } });
 
         if (!user) {
+            console.log('[Google Login] Creating new user');
             user = await prisma.user.create({
                 data: {
                     email,
@@ -99,6 +111,7 @@ export const googleLogin = async (req: Request, res: Response) => {
             });
             await mailService.sendWelcomeEmail(email, name || 'friend');
         } else {
+            console.log('[Google Login] Existing user logged in');
             await mailService.sendSecurityAlert(email, 'LOGIN');
         }
 
@@ -106,8 +119,9 @@ export const googleLogin = async (req: Request, res: Response) => {
 
         const { passwordHash: _passwordHash, ...userWithoutPassword } = user;
         return ApiResponse.success(res, { user: userWithoutPassword, token }, 'Google Login successful');
-    } catch (_error) {
-        return ApiResponse.error(res, 'Google authentication failed', 400);
+    } catch (error: any) {
+        console.error('[Google Login Error]:', error.message);
+        return ApiResponse.error(res, 'Google authentication failed: ' + error.message, 400);
     }
 };
 
