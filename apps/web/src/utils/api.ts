@@ -3,8 +3,11 @@ import { Capacitor } from '@capacitor/core';
 // Environment Configuration
 const isProduction = import.meta.env.PROD;
 const RENDER_API_URL = import.meta.env.VITE_API_URL || 'https://kingdom-connect-api.onrender.com';
-const LOCAL_ANDROID_URL = 'http://10.0.2.2:5000';
-const LOCAL_WEB_URL = 'http://localhost:5000';
+const LOCAL_ANDROID_URL = 'https://kingdom-connect-api.onrender.com';
+const LOCAL_WEB_URL = 'https://kingdom-connect-api.onrender.com';
+
+// const LOCAL_ANDROID_URL = 'http://10.0.2.2:5000';
+// const LOCAL_WEB_URL = 'http://localhost:5000';
 
 const getBaseUrl = () => {
     if (isProduction) {
